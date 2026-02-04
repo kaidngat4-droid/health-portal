@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام تسجيل الأمراض</title>
 <link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
 </head>
 <body>
 
@@ -14,6 +15,7 @@
   <input type="text" id="username" placeholder="اسم المستخدم">
   <input type="password" id="password" placeholder="كلمة المرور">
   <button onclick="login()">دخول</button>
+  <div id="loginError"></div>
 </div>
 
 <!-- الصفحة الرئيسية -->
@@ -21,13 +23,17 @@
 
   <!-- ===== رأس الصفحة ===== -->
   <header class="main-header">
-  <img src="assets/logo.png" alt="شعار المرفق الصحي" class="logo">
+    <!-- شعار الوزارة -->
+    <img src="assets/logo.png" alt="شعار المرفق الصحي" class="logo">
 
-   <!-- العنوان الرسمي -->
+    <!-- العنوان الرسمي -->
     <div class="gov-title">
       الجمهورية اليمنية<br>
       <span>وزارة الصحة والبيئة</span><br>
       <small>الإحصاء الصحي</small>
+    </div>
+
+    <!-- شريط المعلومات -->
     <div class="info">
 
       <!-- المحافظة -->
