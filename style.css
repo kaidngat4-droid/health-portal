@@ -13,7 +13,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("assets/login-bg.jpg") no-repeat center center;
+  background: url("assets/login-bg.jpeg") no-repeat center center;
   background-size: cover;
 }
 
