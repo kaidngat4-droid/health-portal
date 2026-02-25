@@ -1,119 +1,166 @@
-<!DOCTYPE html>  <html lang="ar">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>نظام تسجيل الأمراض</title>  
-<link rel="stylesheet" href="style.css">  
-<script src="app.js" defer></script>  
-</head>  
-<body>  <!-- ================= شاشة تسجيل الدخول ================= -->  <div id="loginPage">  
-  <div class="login-box">  
-    <img src="assets/logo.png" alt="شعار النظام" class="logo">  
-    <h2>🔒 تسجيل الدخول</h2>  
-    <input type="text" id="username" placeholder="اسم المستخدم">  
-    <input type="password" id="password" placeholder="كلمة المرور">  
-    <button onclick="login()">تسجيل الدخول</button>  
-    <div id="loginError"></div>  
-  </div>  
-</div>  <!-- ================= صفحة اختيار المرفق الصحي ================= -->  <div id="healthFacilitiesPage" style="display:none;">  
-  <h2>🏥 المرافق الصحية</h2>  
-  <ul id="facilitiesList">  
-    <li onclick="selectFacility(this)">مستشفى العدين العام</li>  
-    <li onclick="selectFacility(this)">المركز الصحي بلادالمليكي</li>  
-    <li onclick="selectFacility(this)">المركز الصحي الرئاس</li>  
-    <li onclick="selectFacility(this)">المركز الصحي الجبلين</li>  
-  </ul>  
-</div>  <!-- ================= الصفحة الرئيسية / داشبورد ================= -->  <div id="dashboard" style="display:none;">    <!-- ===== رأس الصفحة ===== -->    <header class="main-header">  
-    <img src="assets/logo.png" alt="شعار المرفق الصحي" class="logo">  <!-- العنوان الرسمي -->  
-<div class="gov-title">  
-  الجمهورية اليمنية<br>  
-  <span>وزارة الصحة والبيئة</span><br>  
-  <small>الإحصاء الصحي</small>  
-</div>  
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام تسجيل الأمراض</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 
-<!-- اسم المرفق الصحي الحالي -->  
-<h2 id="currentFacilityName" style="margin-top:10px;color:#fff;"></h2>  
+  <!-- ====== CSS تصحيح شاشة تسجيل الدخول ====== -->
+  <style>
+    /* ====== تصحيح شاشة تسجيل الدخول ====== */
+    #loginPage {
+      height: 100vh;
+      display: flex;
+      justify-content: center; /* يوسّط أفقياً */
+      align-items: center;     /* يوسّط عمودياً */
+      text-align: center;
+      flex-direction: column;
+      background: linear-gradient(135deg, #0d6efd, #0a58ca);
+    }
 
-<!-- شريط المعلومات -->  
-<div class="location-bar">  
+    .login-box img {
+      width: 90px;   /* تصغير الشعار */
+      height: auto;
+      display: block;
+      margin: 0 auto 15px auto;
+    }
 
-  <div class="field">  
-    <label>المحافظة:</label>  
-    <select id="governorate" onchange="populateDistricts()">  
-      <option value="">اختر المحافظة</option>  
-      <option value="صنعاء">صنعاء</option>  
-      <option value="عدن">عدن</option>  
-      <option value="تعز">تعز</option>  
-      <option value="إب">إب</option>  
-      <option value="الحديدة">الحديدة</option>  
-      <option value="ذمار">ذمار</option>  
-      <option value="حجة">حجة</option>  
-      <option value="عمران">عمران</option>  
-      <option value="ريمة">ريمة</option>  
-      <option value="المحويت">المحويت</option>  
-      <option value="البيضاء">البيضاء</option>  
-      <option value="مأرب">مأرب</option>  
-      <option value="الجوف">الجوف</option>  
-      <option value="صعدة">صعدة</option>  
-      <option value="شبوة">شبوة</option>  
-      <option value="حضرموت">حضرموت</option>  
-      <option value="المهرة">المهرة</option>  
-      <option value="أبين">أبين</option>  
-      <option value="لحج">لحج</option>  
-      <option value="الضالع">الضالع</option>  
-      <option value="سقطرى">سقطرى</option>  
-    </select>  
-  </div>  
+    .login-box {
+      max-width: 380px;
+      width: 90%;
+      padding: 30px 25px;
+      border-radius: 18px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      text-align: center;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
 
-  <div class="field">  
-    <label>المديرية:</label>  
-    <select id="district">  
-      <option value="">اختر المديرية</option>  
-    </select>  
-  </div>  
-  <div class="field">
-  <label>المرفق الصحي:</label>
-  <select id="facilityName" onchange="selectFacility(this)">
-    <option value="">-- اختر المرفق الصحي --</option>
-    <option value="مستشفى العدين العام">مستشفى العدين العام</option>
-    <option value="المركز الصحي بلادالمليكي">المركز الصحي بلادالمليكي</option>
-    <option value="المركز الصحي الرئاس">المركز الصحي الرئاس</option>
-    <option value="المركز الصحي الجبلين">المركز الصحي الجبلين</option>
-  </select>
+<!-- ================= شاشة تسجيل الدخول ================= -->
+<div id="loginPage">
+  <div class="login-box">
+    <img src="assets/logo.png" alt="شعار النظام" class="logo">
+    <h2>🔒 تسجيل الدخول</h2>
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="login()">تسجيل الدخول</button>
+    <div id="loginError"></div>
   </div>
+</div>
 
-  <div class="field">  
-    <label>الشهر:</label>  
-    <select id="month">  
-      <option value="1">يناير</option>  
-      <option value="2">فبراير</option>  
-      <option value="3">مارس</option>  
-      <option value="4">أبريل</option>  
-      <option value="5">مايو</option>  
-      <option value="6">يونيو</option>  
-      <option value="7">يوليو</option>  
-      <option value="8">أغسطس</option>  
-      <option value="9">سبتمبر</option>  
-      <option value="10">أكتوبر</option>  
-      <option value="11">نوفمبر</option>  
-      <option value="12">ديسمبر</option>  
-    </select>  
-  </div>  
+<!-- ================= صفحة اختيار المرفق الصحي ================= -->
+<div id="healthFacilitiesPage" style="display:none;">
+  <h2>🏥 المرافق الصحية</h2>
+  <ul id="facilitiesList">
+    <li onclick="selectFacility(this)">مستشفى العدين العام</li>
+    <li onclick="selectFacility(this)">المركز الصحي بلادالمليكي</li>
+    <li onclick="selectFacility(this)">المركز الصحي الرئاس</li>
+    <li onclick="selectFacility(this)">المركز الصحي الجبلين</li>
+  </ul>
+</div>
 
-  <div class="field">  
-    <label>السنة:</label>  
-    <select id="year">  
-      <option>2024</option>  
-      <option>2025</option>  
-      <option selected>2026</option>  
-      <option>2027</option>  
-      <option>2028</option>  
-    </select>  
-  </div>  
+<!-- ================= الصفحة الرئيسية / داشبورد ================= -->
+<div id="dashboard" style="display:none;">
 
-</div> <!-- نهاية location-bar -->
+  <!-- ===== رأس الصفحة ===== -->
+  <header class="main-header">
+    <img src="assets/logo.png" alt="شعار المرفق الصحي" class="logo">
 
-  </header>  
+    <!-- العنوان الرسمي -->
+    <div class="gov-title">
+      الجمهورية اليمنية<br>
+      <span>وزارة الصحة والبيئة</span><br>
+      <small>الإحصاء الصحي</small>
+    </div>
+
+    <!-- اسم المرفق الصحي الحالي -->
+    <h2 id="currentFacilityName" style="margin-top:10px;color:#fff;"></h2>
+
+    <!-- شريط المعلومات -->
+    <div class="location-bar">
+
+      <div class="field">
+        <label>المحافظة:</label>
+        <select id="governorate" onchange="populateDistricts()">
+          <option value="">اختر المحافظة</option>
+          <option value="صنعاء">صنعاء</option>
+          <option value="عدن">عدن</option>
+          <option value="تعز">تعز</option>
+          <option value="إب">إب</option>
+          <option value="الحديدة">الحديدة</option>
+          <option value="ذمار">ذمار</option>
+          <option value="حجة">حجة</option>
+          <option value="عمران">عمران</option>
+          <option value="ريمة">ريمة</option>
+          <option value="المحويت">المحويت</option>
+          <option value="البيضاء">البيضاء</option>
+          <option value="مأرب">مأرب</option>
+          <option value="الجوف">الجوف</option>
+          <option value="صعدة">صعدة</option>
+          <option value="شبوة">شبوة</option>
+          <option value="حضرموت">حضرموت</option>
+          <option value="المهرة">المهرة</option>
+          <option value="أبين">أبين</option>
+          <option value="لحج">لحج</option>
+          <option value="الضالع">الضالع</option>
+          <option value="سقطرى">سقطرى</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>المديرية:</label>
+        <select id="district">
+          <option value="">اختر المديرية</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>المرفق الصحي:</label>
+        <select id="facilityName" onchange="selectFacility(this)">
+          <option value="">-- اختر المرفق الصحي --</option>
+          <option value="مستشفى العدين العام">مستشفى العدين العام</option>
+          <option value="المركز الصحي بلادالمليكي">المركز الصحي بلادالمليكي</option>
+          <option value="المركز الصحي الرئاس">المركز الصحي الرئاس</option>
+          <option value="المركز الصحي الجبلين">المركز الصحي الجبلين</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>الشهر:</label>
+        <select id="month">
+          <option value="1">يناير</option>
+          <option value="2">فبراير</option>
+          <option value="3">مارس</option>
+          <option value="4">أبريل</option>
+          <option value="5">مايو</option>
+          <option value="6">يونيو</option>
+          <option value="7">يوليو</option>
+          <option value="8">أغسطس</option>
+          <option value="9">سبتمبر</option>
+          <option value="10">أكتوبر</option>
+          <option value="11">نوفمبر</option>
+          <option value="12">ديسمبر</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>السنة:</label>
+        <select id="year">
+          <option>2024</option>
+          <option>2025</option>
+          <option selected>2026</option>
+          <option>2027</option>
+          <option>2028</option>
+        </select>
+      </div>
+
+    </div> <!-- نهاية location-bar -->
+  </header>
+
 
   <!-- ===================== G1: الأمراض المعوية ===================== -->
   <div id="G1" class="group">
