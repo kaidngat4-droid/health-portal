@@ -1,42 +1,93 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام تسجيل الأمراض</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام تسجيل الأمراض</title>
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
 
-  <!-- ====== CSS تصحيح شاشة تسجيل الدخول ====== -->
-  <style>
-    /* ====== تصحيح شاشة تسجيل الدخول ====== */
-    #loginPage {
-      height: 100vh;
-      display: flex;
-      justify-content: center; /* يوسّط أفقياً */
-      align-items: center;     /* يوسّط عمودياً */
-      text-align: center;
-      flex-direction: column;
-      background: linear-gradient(135deg, #0d6efd, #0a58ca);
-    }
+<style>
+  /* ====== إصلاح شاشة تسجيل الدخول ====== */
+  #loginPage {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 
-    .login-box img {
-      width: 90px;   /* تصغير الشعار */
-      height: auto;
-      display: block;
-      margin: 0 auto 15px auto;
-    }
+  .login-box {
+    background: #fff;
+    padding: 30px 25px;
+    width: 90%;
+    max-width: 380px;
+    border-radius: 18px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    text-align: center;
+    animation: fadeIn 0.6s ease;
+  }
 
-    .login-box {
-      max-width: 380px;
-      width: 90%;
-      padding: 30px 25px;
-      border-radius: 18px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-      text-align: center;
-      background: #fff;
-    }
-  </style>
+  .login-box img {
+    width: 90px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px auto;
+  }
+
+  .login-box h2 {
+    margin-bottom: 20px;
+    color: #0d6efd;
+    font-size: 20px;
+  }
+
+  .login-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .login-box input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13,110,253,0.3);
+    outline: none;
+  }
+
+  .login-box button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg,#0d6efd,#084298);
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .login-box button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+  }
+
+  #loginError {
+    color: #dc3545;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  @keyframes fadeIn {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
+  }
+</style>
 </head>
 <body>
 
