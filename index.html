@@ -6,110 +6,14 @@
 <title>نظام تسجيل الأمراض</title>
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
-
-<style>
-body{
-  margin:0;
-  font-family: 'Cairo', sans-serif;
-  direction: rtl;
-  background: linear-gradient(135deg,#0d6efd,#0a58ca);
-}
-
-/* ===== تسجيل الدخول ===== */
-#loginPage{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.login-box{
-  background:#fff;
-  padding:40px;
-  width:350px;
-  border-radius:15px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  text-align:center;
-}
-
-.login-box h2{
-  margin-bottom:20px;
-  color:#0d6efd;
-}
-
-.login-box input{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:14px;
-}
-
-.login-box input:focus{
-  border-color:#0d6efd;
-  outline:none;
-  box-shadow:0 0 5px rgba(13,110,253,0.3);
-}
-
-.login-box button{
-  width:100%;
-  padding:10px;
-  margin-top:15px;
-  background:#0d6efd;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  font-size:15px;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.login-box button:hover{
-  background:#084298;
-}
-
-#loginError{
-  color:red;
-  margin-top:10px;
-  font-size:14px;
-}
-
-/* ===== صفحة المرافق ===== */
-#healthFacilitiesPage{
-  padding:40px;
-  background:#fff;
-  min-height:100vh;
-}
-
-#healthFacilitiesPage h2{
-  text-align:center;
-  margin-bottom:20px;
-  color:#0d6efd;
-}
-
-#facilitiesList li{
-  padding:12px;
-  margin:8px 0;
-  background:#f8f9fa;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.3s;
-  border:1px solid #ddd;
-}
-
-#facilitiesList li:hover{
-  background:#e2e6ea;
-}
-</style>
-
 </head>
 <body>
 
-<!-- شاشة تسجيل الدخول -->
+<!-- ================= شاشة تسجيل الدخول ================= -->
 <div id="loginPage">
   <div class="login-box">
-    <h2>🔒 نظام الإحصاء الصحي</h2>
+    <img src="assets/logo.png" alt="شعار النظام" class="logo">
+    <h2>🔒 تسجيل الدخول</h2>
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
     <button onclick="login()">تسجيل الدخول</button>
@@ -117,27 +21,39 @@ body{
   </div>
 </div>
 
-<!-- صفحة المرافق الصحية -->
+<!-- ================= صفحة اختيار المرفق الصحي ================= -->
 <div id="healthFacilitiesPage" style="display:none;">
   <h2>🏥 المرافق الصحية</h2>
-  <ul id="facilitiesList" style="list-style:none; padding:0;">
-    <!-- يتم تعبئتها من JavaScript -->
+  <ul id="facilitiesList">
+    <li onclick="selectFacility(this)">مستشفى العدين العام</li>
+    <li onclick="selectFacility(this)">المركز الصحي بلادالمليكي</li>
+    <li onclick="selectFacility(this)">المركز الصحي الرئاس</li>
+    <li onclick="selectFacility(this)">المركز الصحي الجبلين</li>
   </ul>
 </div>
 
-<!-- الصفحة الرئيسية (dashboard) -->
+<!-- ================= الصفحة الرئيسية / داشبورد ================= -->
 <div id="dashboard" style="display:none;">
+
   <!-- ===== رأس الصفحة ===== -->
   <header class="main-header">
     <img src="assets/logo.png" alt="شعار المرفق الصحي" class="logo">
+
+    <!-- العنوان الرسمي -->
     <div class="gov-title">
       الجمهورية اليمنية<br>
       <span>وزارة الصحة والبيئة</span><br>
       <small>الإحصاء الصحي</small>
     </div>
+
+    <!-- اسم المرفق الصحي الحالي -->
+    <h2 id="currentFacilityName" style="margin-top:10px;color:#fff;"></h2>
+
     <!-- شريط المعلومات -->
-    <div class="info">
-      <label>المحافظة:
+    <div class="location-bar">
+
+      <div class="field">
+        <label>المحافظة:</label>
         <select id="governorate" onchange="populateDistricts()">
           <option value="">اختر المحافظة</option>
           <option value="صنعاء">صنعاء</option>
@@ -162,22 +78,17 @@ body{
           <option value="الضالع">الضالع</option>
           <option value="سقطرى">سقطرى</option>
         </select>
-      </label>
+      </div>
 
-      <label>المديرية:
+      <div class="field">
+        <label>المديرية:</label>
         <select id="district">
           <option value="">اختر المديرية</option>
         </select>
-      </label>
-<label>اختر المرفق الصحي:</label>
-<select id="facilityName">
-  <option value="">-- اختر المرفق الصحي --</option>
-  <option value="مستشفى العدين العام">مستشفى العدين العام</option>
-  <option value="المركز الصحي بلادالمليكي">المركز الصحي بلادالمليكي</option>
-  <option value="المركز الصحي الرئاس">المركز الصحي الرئاس</option>
-  <option value="المركز الصحي الجبلين">المركز الصحي الجبلين</option>
-</select>
-      <label>الشهر:
+      </div>
+
+      <div class="field">
+        <label>الشهر:</label>
         <select id="month">
           <option value="1">يناير</option>
           <option value="2">فبراير</option>
@@ -192,9 +103,10 @@ body{
           <option value="11">نوفمبر</option>
           <option value="12">ديسمبر</option>
         </select>
-      </label>
+      </div>
 
-      <label>السنة:
+      <div class="field">
+        <label>السنة:</label>
         <select id="year">
           <option>2024</option>
           <option>2025</option>
@@ -202,8 +114,9 @@ body{
           <option>2027</option>
           <option>2028</option>
         </select>
-      </label>
-    </div>
+      </div>
+
+    </div> <!-- نهاية location-bar -->
   </header>
 
 
