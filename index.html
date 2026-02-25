@@ -6,95 +6,13 @@
 <title>نظام تسجيل الأمراض</title>
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
-
-<style>
-  /* ====== إصلاح شاشة تسجيل الدخول ====== */
-  #loginPage {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-
-  .login-box {
-    background: #fff;
-    padding: 30px 25px;
-    width: 90%;
-    max-width: 380px;
-    border-radius: 18px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-    text-align: center;
-    animation: fadeIn 0.6s ease;
-  }
-
-  .login-box img {
-    width: 90px;
-    height: auto;
-    display: block;
-    margin: 0 auto 15px auto;
-  }
-
-  .login-box h2 {
-    margin-bottom: 20px;
-    color: #0d6efd;
-    font-size: 20px;
-  }
-
-  .login-box input {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    transition: 0.3s;
-  }
-
-  .login-box input:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 6px rgba(13,110,253,0.3);
-    outline: none;
-  }
-
-  .login-box button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#0d6efd,#084298);
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .login-box button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
-  }
-
-  #loginError {
-    color: #dc3545;
-    margin-top: 10px;
-    font-size: 13px;
-    font-weight: bold;
-  }
-
-  @keyframes fadeIn {
-    from {opacity:0; transform: translateY(20px);}
-    to {opacity:1; transform: translateY(0);}
-  }
-</style>
 </head>
 <body>
 
 <!-- ================= شاشة تسجيل الدخول ================= -->
-<div id="loginPage">
+<div id="loginPage" class="login-page">
   <div class="login-box">
-    <img src="assets/logo.png" alt="شعار النظام" class="logo">
+    <img src="assets/logo.png" alt="شعار النظام" class="login-logo">
     <h2>🔒 تسجيل الدخول</h2>
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
@@ -116,24 +34,17 @@
 
 <!-- ================= الصفحة الرئيسية / داشبورد ================= -->
 <div id="dashboard" style="display:none;">
-
-  <!-- ===== رأس الصفحة ===== -->
   <header class="main-header">
     <img src="assets/logo.png" alt="شعار المرفق الصحي" class="logo">
-
-    <!-- العنوان الرسمي -->
     <div class="gov-title">
       الجمهورية اليمنية<br>
       <span>وزارة الصحة والبيئة</span><br>
       <small>الإحصاء الصحي</small>
     </div>
-
-    <!-- اسم المرفق الصحي الحالي -->
     <h2 id="currentFacilityName" style="margin-top:10px;color:#fff;"></h2>
 
     <!-- شريط المعلومات -->
     <div class="location-bar">
-
       <div class="field">
         <label>المحافظة:</label>
         <select id="governorate" onchange="populateDistricts()">
@@ -211,6 +122,8 @@
 
     </div> <!-- نهاية location-bar -->
   </header>
+</div>
+
 
   <!-- ===================== G1: الأمراض المعوية ===================== -->
   <div id="G1" class="group">
