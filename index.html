@@ -4,114 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام تسجيل الأمراض</title>
-
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
-
-<style>
-body{
-  font-family: Tahoma, Arial, sans-serif;
-  margin:0;
-  padding:0;
-  background: linear-gradient(135deg,#0d6efd,#0a58ca);
-}
-
-/* شاشة الدخول */
-#loginPage{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.login-box{
-  background:#fff;
-  padding:40px 30px;
-  width:360px;
-  text-align:center;
-  border-radius:15px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
-}
-
-.login-box input{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
-
-.login-box button{
-  width:100%;
-  padding:12px;
-  margin-top:15px;
-  background:#0d6efd;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-#loginError{
-  color:red;
-  margin-top:10px;
-  font-weight:bold;
-}
-
-/* صفحة المرافق */
-#healthFacilitiesPage{
-  display:none;
-  padding:40px 20px;
-  min-height:100vh;
-  background:#f5f7fa;
-}
-
-#facilitiesList{
-  list-style:none;
-  padding:0;
-  max-width:500px;
-  margin:auto;
-}
-
-#facilitiesList li{
-  background:#fff;
-  padding:12px;
-  margin:8px 0;
-  border-radius:8px;
-  cursor:pointer;
-  text-align:center;
-  font-weight:bold;
-  border:1px solid #ddd;
-}
-
-/* الداشبورد */
-#dashboard{
-  display:none;
-  min-height:100vh;
-  background:#f5f7fa;
-}
-
-.main-header{
-  text-align:center;
-  background:#0d6efd;
-  color:#fff;
-  padding:20px 0;
-}
-
-.logo{
-  width:120px;
-  display:block;
-  margin:0 auto 10px;
-}
-</style>
 </head>
-
 <body>
 
-<!-- شاشة تسجيل الدخول -->
+<!-- ======================= شاشة تسجيل الدخول ======================= -->
 <div id="loginPage">
   <div class="login-box">
-    <img src="assets/logo.png" class="logo">
+    <img src="assets/logo.png" alt="شعار النظام" class="logo">
     <h2>🔒 تسجيل الدخول</h2>
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
@@ -120,9 +21,9 @@ body{
   </div>
 </div>
 
-<!-- صفحة المرافق الصحية -->
-<div id="healthFacilitiesPage">
-  <h2 style="text-align:center;">🏥 المرافق الصحية</h2>
+<!-- ======================= صفحة اختيار المرفق الصحي ======================= -->
+<div id="healthFacilitiesPage" style="display:none;">
+  <h2>🏥 المرافق الصحية</h2>
   <ul id="facilitiesList">
     <li onclick="selectFacility(this)">مستشفى العدين العام</li>
     <li onclick="selectFacility(this)">المركز الصحي بلادالمليكي</li>
@@ -131,17 +32,83 @@ body{
   </ul>
 </div>
 
-<!-- الداشبورد (واحد فقط) -->
-<div id="dashboard">
+<!-- ======================= الصفحة الرئيسية / داشبورد ======================= -->
+<div id="dashboard" style="display:none;">
+  <!-- رأس الصفحة -->
   <header class="main-header">
-    <img src="assets/logo.png" class="logo">
-    <div>
+    <img src="assets/logo.png" alt="شعار المرفق الصحي" class="logo">
+    <div class="gov-title">
       الجمهورية اليمنية<br>
-      وزارة الصحة والبيئة<br>
-      الإحصاء الصحي
+      <span>وزارة الصحة والبيئة</span><br>
+      <small>الإحصاء الصحي</small>
     </div>
-    <h3 id="currentFacilityName" style="margin-top:10px;"></h3>
+    <!-- عرض اسم المرفق الصحي الحالي -->
+    <h1 id="currentFacilityName" style="margin-top:10px;color:#fff;"></h1>
+
+    <!-- شريط المعلومات -->
+    <div class="info">
+      <label>المحافظة:
+        <select id="governorate" onchange="populateDistricts()">
+          <option value="">اختر المحافظة</option>
+          <option value="صنعاء">صنعاء</option>
+          <option value="عدن">عدن</option>
+          <option value="تعز">تعز</option>
+          <option value="إب">إب</option>
+          <option value="الحديدة">الحديدة</option>
+          <option value="ذمار">ذمار</option>
+          <option value="حجة">حجة</option>
+          <option value="عمران">عمران</option>
+          <option value="ريمة">ريمة</option>
+          <option value="المحويت">المحويت</option>
+          <option value="البيضاء">البيضاء</option>
+          <option value="مأرب">مأرب</option>
+          <option value="الجوف">الجوف</option>
+          <option value="صعدة">صعدة</option>
+          <option value="شبوة">شبوة</option>
+          <option value="حضرموت">حضرموت</option>
+          <option value="المهرة">المهرة</option>
+          <option value="أبين">أبين</option>
+          <option value="لحج">لحج</option>
+          <option value="الضالع">الضالع</option>
+          <option value="سقطرى">سقطرى</option>
+        </select>
+      </label>
+
+      <label>المديرية:
+        <select id="district">
+          <option value="">اختر المديرية</option>
+        </select>
+      </label>
+
+      <label>الشهر:
+        <select id="month">
+          <option value="1">يناير</option>
+          <option value="2">فبراير</option>
+          <option value="3">مارس</option>
+          <option value="4">أبريل</option>
+          <option value="5">مايو</option>
+          <option value="6">يونيو</option>
+          <option value="7">يوليو</option>
+          <option value="8">أغسطس</option>
+          <option value="9">سبتمبر</option>
+          <option value="10">أكتوبر</option>
+          <option value="11">نوفمبر</option>
+          <option value="12">ديسمبر</option>
+        </select>
+      </label>
+
+      <label>السنة:
+        <select id="year">
+          <option>2024</option>
+          <option>2025</option>
+          <option selected>2026</option>
+          <option>2027</option>
+          <option>2028</option>
+        </select>
+      </label>
+    </div> <!-- نهاية info -->
   </header>
+
 
 
   <!-- ===================== G1: الأمراض المعوية ===================== -->
