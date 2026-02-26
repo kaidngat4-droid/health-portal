@@ -204,3 +204,64 @@ function sendTelegram() {
   const url = `https://t.me/${username}?text=${message}`;
   window.open(url, "_blank");
 }
+// ================== حفظ التقرير ==================
+function saveReport() {
+
+  const facility = document.getElementById("facilityName")?.value;
+  const month = document.getElementById("month")?.value;
+  const year = document.getElementById("year")?.value;
+
+  if (!facility || !month || !year) {
+    alert("يرجى اختيار المرفق والشهر والسنة أولاً");
+    return;
+  }
+
+  const key = `report_${facility}_${month}_${year}`;
+  let reportData = {};
+
+  // جمع كل المدخلات الرقمية
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    reportData[input.id] = input.value;
+  });
+
+  localStorage.setItem(key, JSON.stringify(reportData));
+
+  alert("✅ تم حفظ التقرير بنجاح");
+}
+
+
+// ================== استرجاع التقرير ==================
+function loadReport() {
+
+  const facility = document.getElementById("facilityName")?.value;
+  const month = document.getElementById("month")?.value;
+  const year = document.getElementById("year")?.value;
+
+  if (!facility || !month || !year) {
+    alert("يرجى اختيار المرفق والشهر والسنة أولاً");
+    return;
+  }
+
+  const key = `report_${facility}_${month}_${year}`;
+  const savedData = localStorage.getItem(key);
+
+  if (!savedData) {
+    alert("⚠ لا يوجد تقرير محفوظ لهذا الشهر");
+    return;
+  }
+
+  const reportData = JSON.parse(savedData);
+
+  Object.keys(reportData).forEach(id => {
+    const input = document.getElementById(id);
+    if (input) input.value = reportData[id];
+  });
+
+  // إعادة حساب المجاميع بعد الاسترجاع
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    const diseaseId = input.id.split("_")[0];
+    calculate(diseaseId);
+  });
+
+  alert("📂 تم استرجاع التقرير بنجاح");
+}
