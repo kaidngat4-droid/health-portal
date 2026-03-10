@@ -311,3 +311,40 @@ tr.low-risk { background-color: #d4edda; }    /* أخضر */
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(111,66,193,0.4);
 }
+.developerSignature{
+
+margin-top:12px;
+font-size:14px;
+text-align:center;
+font-weight:bold;
+
+background:linear-gradient(
+90deg,
+#ff0000,
+#ff8800,
+#ffee00,
+#00ccff,
+#0066ff,
+#ff0000
+);
+
+background-size:300%;
+
+-webkit-background-clip:text;
+color:transparent;
+
+animation:devGlow 6s linear infinite;
+
+}
+
+@keyframes devGlow{
+
+0%{
+background-position:0%;
+}
+
+100%{
+background-position:300%;
+}
+
+}
