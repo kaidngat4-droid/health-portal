@@ -348,3 +348,39 @@ background-position:300%;
 }
 
 }
+/* ===== أزرار احترافية ===== */
+.report-actions{
+  text-align:center;
+  margin:30px 0;
+}
+
+.action-btn{
+  padding:12px 25px;
+  margin:8px;
+  font-size:16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  color:#fff;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+/* طباعة */
+.print-btn{
+  background:linear-gradient(45deg,#6c757d,#343a40);
+}
+
+/* حفظ */
+.save-btn{
+  background:linear-gradient(45deg,#0d6efd,#0dcaf0);
+}
+
+/* استرجاع */
+.load-btn{
+  background:linear-gradient(45deg,#198754,#20c997);
+}
+
+.action-btn:hover{
+  transform:scale(1.05);
+}
