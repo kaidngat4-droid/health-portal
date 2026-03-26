@@ -3759,7 +3759,7 @@
 </div>
 <!-- ===== شريط الأزرار ===== -->
 <div class="report-actions">
-  <button class="action-btn print-btn" onclick="printReport()">🖨 طباعة</button>
+<button onclick="printReport(event)" class="action-btn print-btn">🖨 طباعة</button>
   <button class="action-btn save-btn" onclick="saveReport()">💾 حفظ التقرير</button>
   <button class="action-btn load-btn" onclick="loadReport()">📂 استرجاع التقرير</button>
 </div>
@@ -3786,10 +3786,13 @@
 </style>
  <script>
 
-/* 🖨 طباعة */
-function printReport(){
-  window.print();
-}
+function printReport(e){
+  if(e) e.preventDefault();
+
+  setTimeout(()=>{
+    window.print();
+  },100);
+   }
 
 /* 💾 حفظ */
 function saveReport(){
